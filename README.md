@@ -10,7 +10,7 @@ $ git clone https://github.com/admred/phpshare.git
 
 $ cd phpshare/
 
-$ php -S 0.0.0.0:8000 
+$ php -c user.ini -S 0.0.0.0:8000 
 
 Se accede con el navegador, se debe conocer la ip local e ingresar con el navegador
 
