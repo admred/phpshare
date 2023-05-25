@@ -8,7 +8,7 @@ function listFiles($path,$keyword){
     $dh=opendir($path);
     while ( $f=readdir($dh)  ) {
         if( $f && $f[0] == '.' || strpos($f,".php") != false )  continue;  // filter garbage
-        if( !empty($keyword)  &&  strpos($f,$keyword) === false ) continue;  // if keyword is not empty but do not match, drop it
+        if( !empty($keyword)  &&  strpos($f,$keyword) === false ) continue;  // if keyword is not empty but does not match, drop it
         $st=stat($f);
         $desc=[ 
             "name" => $f , 
