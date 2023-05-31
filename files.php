@@ -6,14 +6,14 @@ function listFiles($path,$keyword=""){
     $files=[];
 
     $dh=opendir($path);
-    while ( $f=readdir($dh)  ) {
+    while ( $f=readdir($dh)) {
+        $ff=$path.$f;
         if( $f[0] == '.' )  continue;
         if( !empty($keyword) &&  strpos($f,$keyword) == false ) continue;
         $ff= $path.$f;
         $st=stat($ff);
         $desc=[ 
-            "shortname" => (strlen($f)>27)?substr($f,27)."...":$f,
-            "fullname" => $f,
+            "name" =>  $f,
             "href" =>   $ff,
             "size" => $st['size'],
             "ctime" => strftime('%Y-%m-%d %H:%M',$st["ctime"]),
