@@ -32,7 +32,7 @@
         <?php foreach($lista  as $f): ?>
         <tr>
             <td><?php echo $f['ctime'];?></td>
-            <td><a href="<?php echo $f['name'];?>" title="<?php echo $f['name'];?>"  target="_blank"><?php echo $f['name'];?></td>
+            <td><a href="<?php echo $f['href'];?>" title="<?php echo $f['fullname'];?>"  target="_blank"><?php echo $f['shortname'];?></td>
             <td><?php echo $f['size'];?></td>
             <td><?php echo $f['type'];?></td>
         </tr>

@@ -2,33 +2,35 @@
     
 
 
-function listFiles($path,$keyword){
+function listFiles($path,$keyword=""){
     $files=[];
 
     $dh=opendir($path);
     while ( $f=readdir($dh)  ) {
-        if( $f && $f[0] == '.' || strpos($f,".php") != false )  continue;  // filter garbage
-        if( !empty($keyword)  &&  strpos($f,$keyword) === false ) continue;  // if keyword is not empty but does not match, drop it
-        $st=stat($f);
+        if( $f[0] == '.' )  continue;
+        if( !empty($keyword) &&  strpos($f,$keyword) == false ) continue;
+        $ff= $path.$f;
+        $st=stat($ff);
         $desc=[ 
-            "name" => $f , 
+            "shortname" => (strlen($f)>27)?substr($f,27)."...":$f,
+            "fullname" => $f,
+            "href" =>   $ff,
             "size" => $st['size'],
             "ctime" => strftime('%Y-%m-%d %H:%M',$st["ctime"]),
-            "type" => mime_content_type($f)
-            ] ;
+            "type" => mime_content_type($ff)
+            ] ; 
         array_push($files,$desc);
     }
-    unset($f);
     closedir($dh);
     return $files;
 }
 
-$keyword="";
+$keyword=""; // safe mode
 
 if(isset($_GET['q']) ){
     $keyword=$_GET['q'];
 }
 
-$lista=listFiles(".",$keyword ) or null;
+$lista=listFiles("./uploads/",$keyword ) or null;
 
 ?>
