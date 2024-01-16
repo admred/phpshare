@@ -16,7 +16,7 @@ function listFiles($path,$keyword=""){
             "name" =>  $f,
             "href" =>   $ff,
             "size" => $st['size'],
-            "ctime" => strftime('%Y-%m-%d %H:%M',$st["ctime"]),
+            "ctime" => date('c',$st["ctime"]),
             "type" => mime_content_type($ff)
             ] ; 
         array_push($files,$desc);
