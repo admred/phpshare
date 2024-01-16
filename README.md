@@ -1,7 +1,7 @@
 # phpshare
 ###  Un programa simple en PHP para compartir ficheros en la red local accediendo desde cualquier navegador WEB
 ### Requisitos
-- PHP >= 7.4
+- PHP >= 8.1
 
 ## Como se ejecuta
 
@@ -10,7 +10,7 @@ $ git clone https://github.com/admred/phpshare.git
 
 $ cd phpshare/
 
-$ php -c user.ini -S 0.0.0.0:8000 
+$ php -c user.ini -S 0.0.0.0:8080
 
 Se accede con el navegador, se debe conocer la ip local e ingresar con el navegador
 
