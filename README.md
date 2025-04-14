@@ -1,20 +1,25 @@
 # phpshare
-###  Un programa simple en PHP para compartir ficheros en la red local accediendo desde cualquier navegador WEB
+
+### [ES] Un peque&ntilde;o y divertido programa para compartir ficheros sobre la red local usando un navegador WEB.
+
+### [EN] A small program to enable me pass files from phone to desktop with no pass for services of big corpos.
+
 ### Requisitos
 - PHP >= 8.1
 
-## Como se ejecuta
-
-
+# Descargar codigo
 $ git clone https://github.com/admred/phpshare.git
 
 $ cd phpshare/
 
+## Ejecutar
+
 $ php -c user.ini -S 0.0.0.0:8080
 
-Se accede con el navegador, se debe conocer la ip local e ingresar con el navegador
+## Ejecutar con Docker (recomendable)
 
-Para acceder debe conocer la ip del equipo donde se ejecuta este script. En linux en una consola puede ejecutar: *ip addr* o *ifconfig*
+# docker-compose up --build
+
 
 ## Captura de pantalla
 
@@ -23,9 +28,3 @@ Para acceder debe conocer la ip del equipo donde se ejecuta este script. En linu
 </p>
 
 
-### Problemas conocidos
-
-Puede tener problemas para conectarse si tiene el firewall activado.
-
-
-### Este servicio **no** es apto para uso fuera de la red local o LAN
