@@ -7,7 +7,7 @@ for($i=0;$i<count($_FILES['upload']['name']);$i++){
 }
 
 
-header("Location: index.php");
+header("Location: /");
 die();
 
 ?>

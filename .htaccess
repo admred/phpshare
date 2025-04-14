@@ -1,0 +1,9 @@
+RewriteEngine On
+
+# Rewrite URLs without .php to .php
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^([^/]+)$ $1.php [L]
+
+# Optionally, redirect from .php to extensionless URL
+RewriteCond %{THE_REQUEST} \s/([^.]+)\.php[\s?] [NC]
+RewriteRule ^([^.]+)\.php$ /$1 [R=301,L]

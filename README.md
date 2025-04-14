@@ -19,7 +19,7 @@ Para acceder debe conocer la ip del equipo donde se ejecuta este script. En linu
 ## Captura de pantalla
 
 <p align="center">
-	<img src="captura.png">
+	<img src="assets/captura.png">
 </p>
 
 

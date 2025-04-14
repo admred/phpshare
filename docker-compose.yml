@@ -1,0 +1,10 @@
+
+services:
+  phpshare:
+    build:
+      context: .
+    volumes:
+      - .:/var/www/html
+    ports:
+      - 8080:8080
+
