@@ -7,4 +7,5 @@ services:
       - .:/var/www/html
     ports:
       - 8080:8080
-
+    environment:
+      passwd: ${RANDOM_PASS:-$(openssl rand -base64 12)}

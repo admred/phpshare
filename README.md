@@ -16,7 +16,7 @@ $ cd phpshare/
 
 $ php -c user.ini -S 0.0.0.0:8080
 
-## Ejecutar con Docker (recomendable)
+## Ejecutar con Docker Compose (recomendable)
 
 # docker-compose up --build
 
