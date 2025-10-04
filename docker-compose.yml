@@ -6,6 +6,7 @@ services:
     volumes:
       - .:/var/www/html
     ports:
-      - 8080:8080
+      - 8000:8000
+    image: phpshare
     environment:
       passwd: ${RANDOM_PASS:-$(openssl rand -base64 12)}
