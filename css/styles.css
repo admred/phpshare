@@ -1,20 +1,35 @@
+*{
+    box-sizing: border-box;
+    font-family: 'Bitstream Vera Sans',sans-serif;
+}
 body {
-    height:100svh;
-    max-width: 900px;
-    margin:0 auto;
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    gap: 0.5rem;
 }
 
 nav {
     display: flex;
     justify-content: center;
-    margin:1rem 0;
-    gap: 0.5rem;
+    width:100%;
+    gap:5px;
+}
+nav > .button {
+    width:100%;
+}
+
+main {
+    display:flex;
+    flex-direction: column;
+    width:100%;
 }
 
 section {
     display:flex;
     flex-direction: column;
-    justify-content: center;
 }
 
 .ellipsis {
@@ -27,28 +42,38 @@ td,th {
     padding: 7px;
 }
 
+.button {
+    border: 1px solid lightgray;
+    border-radius: 0.2rem;
+    padding: 1.6rem;
+    line-height: 0;
+    text-decoration: none;
+    color:gray;
+    cursor:pointer;
+    text-align:center;
+}
+
+.button:hover, .button.active {
+    background-color: dodgerblue;
+    border-color: dodgerblue;
+    color:white;
+    font-weight: bolder;
+}
+
 input[type="file"] {
   display: none;
 }
-
 .custom-file {
-  border: 1px solid #ccc;
   display: block;
   text-align: center;
   line-height: 5rem;
-  cursor: pointer;
-}
-
-button:hover, 
-.button:hover,
-input[type="button"]:hover {
-    border-color:#33C3F0;
-    background-color: #33C3F0;;
-    color:white;
 }
 
 #entries {
     display:none;
+}
+table td:first-child {
+    width:20px;
 }
 #message-1 {
     display: none;
@@ -56,11 +81,51 @@ input[type="button"]:hover {
     padding: 1rem;
     border: 3px solid darkcyan;
 }
+
+.spinning {
+    display:block;
+    width:16px;
+    height:16px;
+    background-image: url('/assets/spinner.svg');
+    background-size: 16px 16px;
+    color:black;
+}
+.spinning:hover {
+    background: none;
+}
+.spinning:hover::before {
+    background: none;
+    content:'✕';
+    color: red;
+    cursor:pointer;
+}
+
+.canceled-text {
+    text-decoration: line-through;
+    color:gray;
+}
+
+.canceled::after {
+    content:'✕';
+    color: gray;
+}
+
+
+.success::after {
+    content:'✔';
+    color: green;
+}
+
+@media (width > 900px){
+    nav > .button {
+        width:auto;
+    }
+    main {
+        max-width: 900px;
+    }
+}
 @media (width > 360px) {
     .ellipsis{
         max-width: 50vw;
-    }
-    nav,main {
-        gap: 1rem;
     }
 }
