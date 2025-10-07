@@ -24,7 +24,7 @@ nav > .button {
 main {
     display:flex;
     flex-direction: column;
-    width:100%;
+    width:clamp(360px,100%,750px);
 }
 
 section {
@@ -82,7 +82,7 @@ table td:first-child {
     border: 3px solid darkcyan;
 }
 
-.spinning {
+.spinning .icon  {
     display:block;
     width:16px;
     height:16px;
@@ -90,28 +90,25 @@ table td:first-child {
     background-size: 16px 16px;
     color:black;
 }
-.spinning:hover {
+.spinning .icon:hover {
     background: none;
 }
-.spinning:hover::before {
-    background: none;
+.spinning .icon:hover::before {
     content:'✕';
     color: red;
     cursor:pointer;
 }
 
-.canceled-text {
+.canceled .filename {
     text-decoration: line-through;
     color:gray;
 }
 
-.canceled::after {
+.canceled .icon::after {
     content:'✕';
     color: gray;
 }
-
-
-.success::after {
+.success .icon::after {
     content:'✔';
     color: green;
 }

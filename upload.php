@@ -49,6 +49,12 @@
             </table>
         </section>
     </main>
+    <template id="row-tmpl">
+        <tr class="spinning">
+            <td class="icon"></td>
+            <td class="filename"></td>
+        </tr>
+    </template>
     <script src="/js/actions.js"></script>
 </body>
 </html>

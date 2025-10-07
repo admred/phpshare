@@ -1,15 +1,16 @@
 /* TODO: progress widget or uploading status for every file  */
-/* TODO: put hash id on the tr for easy css referencing */
 /* TODO: alert when user is leaving a upload */
 
+/* global vars */
 const table_entries = document.querySelector("#entries");
 const table_entries_content = document.querySelector("#entries-content");
 const fileinput = document.querySelector("#upload-action");
 const csrf = document.querySelector('meta[name="csrf-token"]').content;
 const controllers = {};
 
-
 /* utility funcs */
+
+/* hashing func from GPT (unsafe) */
 async function hashString(str) {
   const encoder = new TextEncoder();
   const data = encoder.encode(str);
@@ -20,71 +21,95 @@ async function hashString(str) {
     .join("");
   return hashHex;
 }
+/* https://stackoverflow.com/a/52171480 */
+const cyrb53 = (str, seed = 0) => {
+    let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+    for(let i = 0, ch; i < str.length; i++) {
+        ch = str.charCodeAt(i);
+        h1 = Math.imul(h1 ^ ch, 2654435761);
+        h2 = Math.imul(h2 ^ ch, 1597334677);
+    }
+    h1  = Math.imul(h1 ^ (h1 >>> 16), 2246822507);
+    h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+    h2  = Math.imul(h2 ^ (h2 >>> 16), 2246822507);
+    h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  
+    return 4294967296 * (2097151 & h2) + (h1 >>> 0);
+};
+/* https://stackoverflow.com/a/6234804 */
+const  escapeHtml= val => {
+  return val+""
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+};
 
-/* BUG: async problem */
+
 fileinput.addEventListener("change", async (ev) => {
   ev.preventDefault();
 
-  const filelist = ev.target.files;
-  /* This DOES NOT work on android */
+  /* This feature DOES NOT work on android */
   //const filelist= await window.showOpenFilePicker({multiple:true});
   
+  const filelist = ev.target.files;
+  if( filelist.length == 0 ){
+    return; // not selection
+  }
+
   for (const x of filelist) {
-    const hash = await hashString(x.name);
+    const filename=x.name;
+    const hash = cyrb53(filename);
     await show_file(x,hash);
     send_file(x,hash);
     
   }
   table_entries.style.display = "block";
+
   /* clean up array allow upload again canceled files */
   ev.target.value = null;
 
 });
 
 
-async function show_file(file_obj,hash) {
-  const filename = file_obj.name;
-  const elem = document.querySelector(`tr > td > div[data-target="${hash}"]`);
+async function show_file(file,hash) {
+  const elem = document.getElementById(hash);
+  const filename=file.name;
 
-  /* don't re-upload again */
-  if (elem?.classList.contains("success")) {
-    return;
+  if( elem ){
+    /* if canceled reenable it */
+    if ( elem.classList.contains("canceled") ) {
+        elem.classList.replace("canceled","spinning");
+    }
+    return; // already exist
   }
-
-  /* if exists renable it */
-  if (elem?.classList.contains("canceled")) {
-    elem.classList.add("spinning");
-    elem.classList.remove("canceled");
-    elem.parentElement.nextElementSibling.classList.remove("canceled-text");
-    return;
-  }
-  /* WARN: unsafe value id for data-target property, consider uuid or hash */
-  table_entries_content.innerHTML += `
-        <tr>
-            <td>
-                <div class="spinning" onclick="cancel(this)" data-target="${hash}"></div>
-            </td>
-            <td class="ellipsis">
-                ${filename}
-            </td>
-        </tr>
-        `;
+  /* create a new entry row */
+  const frag=document.createDocumentFragment();
+  const tmpl=document.getElementById('row-tmpl');
+  const clone=tmpl.content.cloneNode(true);
+  const tr=clone.querySelector('tr');
+  tr.id=hash;
+  clone.querySelector('.filename').textContent=escapeHtml(filename);
+  frag.appendChild(clone);
+  table_entries_content.appendChild(frag);
+    
+  table_entries_content.addEventListener('click', e => {
+        const tr = e.target.closest('tr');
+        if (!tr) return;
+        cancel(tr);
+    });
 }
 
-async function send_file(file_obj,hash) {
+async function send_file(file,hash) {
   const form_data = new FormData();
-  const filename = file_obj.name;
-  /*
-    console.log(file_obj)
-    const payload= await file_obj.getFile();
-    //const uuid=Crypto.randomUUID()
-    */
   const controller = new AbortController();
+
   controllers[hash] = controller;
+  
+  form_data.append("file",file);
 
-  form_data.append("file", file_obj);
-
-  // await
+  // await ?
   fetch("/api/files.php", {
     method: "POST",
     body: form_data,
@@ -97,7 +122,7 @@ async function send_file(file_obj,hash) {
         console.log(resp);
         return;
       }
-      const elem = document.querySelector(`[data-target="${hash}"]`);
+      const elem = document.getElementById( hash );
       success(elem);
     })
     .catch((ex) => {
@@ -108,27 +133,20 @@ async function send_file(file_obj,hash) {
     });
 }
 function success(elem) {
-  elem.classList.remove("spinning");
-  elem.classList.add("success");
+  elem.classList.replace("spinning","success");
 }
-function cancel(elem) {
-  const id = elem.getAttribute("data-target");
-  if (id == null) {
-    console.warn("null id");
-    return;
-  }
 
-  const controller = controllers[id];
+function cancel(elem) {
+  
+  if( ! elem.classList.contains('spinning') )
+    return;
+  
+  const controller = controllers[elem.id];
   if (controller == null) {
-    console.warn("null controller");
+    console.warn("controller doesn't exists");
     return;
   }
   controller.abort("Canceled by user action");
 
-  elem.getAttribute;
-  elem.classList.remove("spinning");
-  elem.classList.add("canceled");
-  elem.parentElement.nextElementSibling.classList.add("canceled-text");
+  elem.classList.replace("spinning","canceled");
 }
-
-/* TODO: show progress */
