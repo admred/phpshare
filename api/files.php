@@ -29,7 +29,7 @@ function handle_post(){
         return;
     }
     $file=$_FILES['file'];
-    move_uploaded_file($file['tmp_name'],__DIR__."/../uploads/".$file['name']);
+    move_uploaded_file($file['tmp_name'],__DIR__."/../uploads/".htmlspecialchars($file['name']));
 
     http_response_code(201);
     echo json_encode([

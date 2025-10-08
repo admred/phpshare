@@ -20,7 +20,7 @@
         <a class="button active" href="/upload.html">
             Upload
         </a>
-        <a class="button" href="/list.html">
+        <a class="button" href="/list.php">
             Files
         </a>
         <a class="button" href="/search.html">

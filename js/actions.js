@@ -1,5 +1,9 @@
-/* TODO: progress widget or uploading status for every file  */
+/* TODO: include progress  of uploading */
 /* TODO: alert when user is leaving a upload */
+
+/* IDEA: change CSS to buttons like windows ui for phone */
+/* IDEA: remove canceled (easy) and more async */
+/* IDEA: */
 
 /* global vars */
 const table_entries = document.querySelector("#entries");
@@ -61,7 +65,7 @@ fileinput.addEventListener("change", async (ev) => {
   for (const x of filelist) {
     const filename=x.name;
     const hash = cyrb53(filename);
-    await show_file(x,hash);
+    show_file(x,hash);
     send_file(x,hash);
     
   }
@@ -148,5 +152,6 @@ function cancel(elem) {
   }
   controller.abort("Canceled by user action");
 
-  elem.classList.replace("spinning","canceled");
+  elem.remove();
 }
+
