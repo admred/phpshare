@@ -1,9 +1,7 @@
-/* TODO: include progress  of uploading */
-/* TODO: alert when user is leaving a upload */
-
-/* IDEA: change CSS to buttons like windows ui for phone */
-/* IDEA: remove canceled (easy) and more async */
-/* IDEA: */
+/* TODO: show progress */
+/* TODO: add background upload service */
+/* IDEA: change CSS to buttons like windows ui for phone */ 
+/* IDEA: idea */
 
 /* global vars */
 const table_entries = document.querySelector("#entries");
@@ -50,28 +48,37 @@ const  escapeHtml= val => {
     .replaceAll("'", "&#039;");
 };
 
+const worker=async(queue)=>{
+  while( queue.length > 0 ) {
+    const file=queue.shift();
+    const filename=file.name;
+    const hash = cyrb53(filename);
+    show_file(file,hash);
+    await send_file(file,hash);
+  }
+}
 
 fileinput.addEventListener("change", async (ev) => {
   ev.preventDefault();
 
-  /* This feature DOES NOT work on android */
+  /* DOES NOT work on android */
   //const filelist= await window.showOpenFilePicker({multiple:true});
   
   const filelist = ev.target.files;
   if( filelist.length == 0 ){
-    return; // not selection
+    return; // none selected
   }
+  const queue=Array.from(filelist);
+  /* start 3 worker */
+  await Promise.all([
+    worker(queue),
+    worker(queue),
+    worker(queue)
+  ]);
 
-  for (const x of filelist) {
-    const filename=x.name;
-    const hash = cyrb53(filename);
-    show_file(x,hash);
-    send_file(x,hash);
-    
-  }
   table_entries.style.display = "block";
 
-  /* clean up array allow upload again canceled files */
+  /* allow upload again canceled files */
   ev.target.value = null;
 
 });
@@ -81,13 +88,8 @@ async function show_file(file,hash) {
   const elem = document.getElementById(hash);
   const filename=file.name;
 
-  if( elem ){
-    /* if canceled reenable it */
-    if ( elem.classList.contains("canceled") ) {
-        elem.classList.replace("canceled","spinning");
-    }
-    return; // already exist
-  }
+  if( elem ) return; // already exist
+  
   /* create a new entry row */
   const frag=document.createDocumentFragment();
   const tmpl=document.getElementById('row-tmpl');
