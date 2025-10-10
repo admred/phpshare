@@ -1,0 +1,36 @@
+.u-list li a {
+    color:black;
+    padding-left:5px;
+}
+.u-list li {
+    border-bottom: 1px solid #ccc;
+}
+
+.sorter-bar {
+    display:flex;
+    flex-direction: row;
+    gap:1rem;
+    flex-wrap: wrap;
+    padding:.5rem;
+}
+select {
+    font-size:1rem;
+    font-family: 'Bitstream Vera Sans',sans-serif;
+}
+
+fieldset {
+    display:flex;
+    justify-content: space-between;
+    padding:1rem;
+}
+
+.meta {
+    display:flex;
+    gap:5px;
+    font-size:0.5rem;
+    
+}
+.meta > * {
+    padding:5px;
+    color:gray;
+}
