@@ -30,29 +30,22 @@
     <header>
         <div id="message-1" class="message"></div>
     </header>
-    <main class="container"">
-        
+    <main class="container">
         <section>
             <label for="upload-action" class="custom-file button">Upload files</label>
             <input type="file" id="upload-action" multiple>
         </section>
         <section>
-            <table id="entries">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Files</th>
-                    </tr>
-                </thead>
-                <tbody id="entries-content">
-                </tbody>
-            </table>
+            <table class="spinning entry"  id="entries" style="display:block;"></table>    
         </section>
     </main>
-    <template id="row-tmpl">
+    <template id="upload-tmpl">
         <tr class="spinning">
-            <td class="icon"></td>
+            <td> 
+                <button class="cancel-button">Cancel</button>
+            </td>
             <td class="filename"></td>
+            <td class="progress-text"></td>
         </tr>
     </template>
     <script src="/js/actions.js"></script>

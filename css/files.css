@@ -9,9 +9,13 @@
 .sorter-bar {
     display:flex;
     flex-direction: row;
-    gap:1rem;
+    justify-content: space-between;
+    border: 1px solid lightgrey;
     flex-wrap: wrap;
-    padding:.5rem;
+}
+.sorter-bar legend{
+    color: gray;
+    
 }
 select {
     font-size:1rem;

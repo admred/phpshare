@@ -1,5 +1,5 @@
 <?php
-
+ declare(strict_types=1);
 
 header('Content-Type: application/json');
 
@@ -48,6 +48,8 @@ function handle_get(){
     $files=[];
     $path=__DIR__."/../uploads";
     $keyword=$_GET['q']??null;
+    $
+
     $dh=opendir($path);
     while ( $f=readdir($dh)) {
         if( $f[0] == '.' )  continue;

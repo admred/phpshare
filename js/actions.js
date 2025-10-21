@@ -4,12 +4,11 @@
 /* IDEA: idea */
 
 /* global vars */
-const table_entries = document.querySelector("#entries");
-const table_entries_content = document.querySelector("#entries-content");
+const entries = document.querySelector("#entries");
 const fileinput = document.querySelector("#upload-action");
 const csrf = document.querySelector('meta[name="csrf-token"]').content;
-const controllers = {};
-
+const queue=[];
+const requests={};
 /* utility funcs */
 
 /* hashing func from GPT (unsafe) */
@@ -39,7 +38,7 @@ const cyrb53 = (str, seed = 0) => {
     return 4294967296 * (2097151 & h2) + (h1 >>> 0);
 };
 /* https://stackoverflow.com/a/6234804 */
-const  escapeHtml= val => {
+const escapeHtml= val => {
   return val+""
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
@@ -47,13 +46,22 @@ const  escapeHtml= val => {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 };
+/* https://stackoverflow.com/a/39914235 */
+const delay = ms => new Promise(res => setTimeout(res, ms));
 
 const worker=async(queue)=>{
-  while( queue.length > 0 ) {
-    const file=queue.shift();
+  while( true ) {
+    const file= await queue.shift();
+
+    /* if there is not work today, sleep again */
+    if( file == null ){
+      await delay(1000);
+      continue;
+    }
+
     const filename=file.name;
     const hash = cyrb53(filename);
-    show_file(file,hash);
+    await show_file(file,hash);
     await send_file(file,hash);
   }
 }
@@ -68,15 +76,9 @@ fileinput.addEventListener("change", async (ev) => {
   if( filelist.length == 0 ){
     return; // none selected
   }
-  const queue=Array.from(filelist);
-  /* start 3 worker */
-  await Promise.all([
-    worker(queue),
-    worker(queue),
-    worker(queue)
-  ]);
+  Array.from(filelist,(x)=>queue.push(x));
 
-  table_entries.style.display = "block";
+  entries.style.display = "block";
 
   /* allow upload again canceled files */
   ev.target.value = null;
@@ -92,68 +94,69 @@ async function show_file(file,hash) {
   
   /* create a new entry row */
   const frag=document.createDocumentFragment();
-  const tmpl=document.getElementById('row-tmpl');
+  const tmpl=document.getElementById('upload-tmpl');
   const clone=tmpl.content.cloneNode(true);
-  const tr=clone.querySelector('tr');
-  tr.id=hash;
+  const ent=clone.querySelector('tr');
+  ent.id=hash;
   clone.querySelector('.filename').textContent=escapeHtml(filename);
   frag.appendChild(clone);
-  table_entries_content.appendChild(frag);
+  entries.appendChild(frag);
     
-  table_entries_content.addEventListener('click', e => {
-        const tr = e.target.closest('tr');
-        if (!tr) return;
-        cancel(tr);
+  entries.addEventListener('click', e => {
+        const ent = e.target.closest('tr');
+        if (!ent) return;
+        cancel(ent);
     });
 }
 
 async function send_file(file,hash) {
+  const xhr=new XMLHttpRequest();
   const form_data = new FormData();
-  const controller = new AbortController();
-
-  controllers[hash] = controller;
+  const elem = document.getElementById(hash);
   
+  requests[hash]= xhr;
   form_data.append("file",file);
 
-  // await ?
-  fetch("/api/files.php", {
-    method: "POST",
-    body: form_data,
-    headers: { "X-CSRF-Token": csrf },
-    credentials: "same-origin",
-    signal: controller.signal,
-  })
-    .then((resp) => {
-      if (!resp.ok) {
-        console.log(resp);
-        return;
-      }
-      const elem = document.getElementById( hash );
-      success(elem);
-    })
-    .catch((ex) => {
-      console.log(ex);
-    })
-    .finally(() => {
-      delete controller[hash];
-    });
-}
-function success(elem) {
-  elem.classList.replace("spinning","success");
+  xhr.open('POST','/api/files.php');
+  xhr.upload.onprogress = event =>{
+    if(event.lengthComputable){
+      const completed=(event.loaded/event.total)*100;
+      elem.querySelector('.progress-text').textContent=`${Math.round(completed)}%`; 
+    }
+  };
+  xhr.onload=(x)=>{
+    console.log(xhr);
+    console.log(x)
+    if(xhr.status === 201 || xhr.status === 200 ){
+      console.info('Server respond OK');
+      elem.classList.replace('spinning','success');
+    }else{
+      console.error(`Server returned status ${xhr.status}`);
+      cancel(elem);
+    }
+  };
+  xhr.onerror= err=>{
+    
+    console.error('Conection Error : '+err)
+    cancel(elem);
+  }
+ xhr.send(form_data);
 }
 
 function cancel(elem) {
-  
-  if( ! elem.classList.contains('spinning') )
-    return;
-  
-  const controller = controllers[elem.id];
-  if (controller == null) {
-    console.warn("controller doesn't exists");
+  if( ! requests[elem.id] ){
+    console.error('elem has not hash');
     return;
   }
-  controller.abort("Canceled by user action");
-
-  elem.remove();
+  elem.classList.replace('spinning','canceled');
+  requests[elem.id].abort();
+  delete requests[elem.id];
+  elem.removeAttribute('id');
 }
 
+document.addEventListener('DOMContentLoaded',()=>{
+  /* Start 3 workers */
+  worker(queue);
+  worker(queue);
+  worker(queue);
+})

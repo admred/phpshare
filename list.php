@@ -20,28 +20,26 @@
             Search
         </a>
     </nav>
-    <div class="sorter-bar">
-        <fieldset>
-            <legend>Sort By</legend>
-            <select id="sorter">
-                <option value="1" selected>Name</option>
-                <option value="2">Date</option>
-                <option value="3">Size</option>
-                <option value="4">Type</option>
-            </select>
-        </fieldset>
-        <fieldset>
-            <legend>Order By</legend>
-            <label for="asc">
-                <input type="radio" id="asc" name="order[]" value="1" checked>
-                Ascending
-            </label>
-            <label for="desc">
-                <input type="radio" id="desc" name="order[]" value="2">
-                Descending
-            </label>
-        </fieldset>
-    </div>
+    
+    <fieldset class="sorter-bar">
+        <legend>Filter</legend>
+        <select id="sorter">
+            <option value="0" selected disabled>Sort By</option>
+            <option value="1">Name</option>
+            <option value="2">Date</option>
+            <option value="3">Size</option>
+            <option value="4">Type</option>
+        </select>
+        <label for="asc">
+            <input type="radio" id="asc" name="order[]" value="1" checked>
+            Ascending
+        </label>
+        <label for="desc">
+            <input type="radio" id="desc" name="order[]" value="2">
+            Descending
+        </label>
+    </fieldset>
+    
     <main class="container">
         <ul class="u-list">
             <?php 

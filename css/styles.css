@@ -82,10 +82,9 @@ input[type="file"] {
 
 #entries {
     display:none;
+    font-size:1rem;
 }
-table td:first-child {
-    width:20px;
-}
+
 #message-1 {
     display: none;
     margin: 0 auto;
@@ -93,33 +92,64 @@ table td:first-child {
     border: 3px solid darkcyan;
 }
 
-.spinning .icon  {
-    display:block;
-    width:16px;
-    height:16px;
-    background-image: url('/assets/spinner.svg');
-    background-size: 16px 16px;
+tr td:first-child {
+    padding: 0;
+    text-align: center;
+}
+.cancel-button {
+    padding:0.3rem 0.6rem;   
+    cursor: pointer;
+    
+}
+.cancel-button:hover {
+    color: salmon;
+    border-color:salmon;
+    border-style: solid;
+}
+.cancel-button:active {
+    background-color: salmon;
+}
+
+.filename {
+    width:100%;
+}
+.progress-text {
+    width:4rem;
+}
+/*
+.spinning .status-icon {
+    background-image: url('/assets/spinner.svg');    
+    background-repeat: no-repeat;
+    background-position: center;
     color:black;
 }
-.spinning .icon:hover {
+.spinning .status-icon:hover {
     background: none;
 }
-.spinning .icon:hover::before {
+
+.spinning .status-icon:hover:before {
     content:'✕';
+    overflow: hidden;
     color: red;
     cursor:pointer;
 }
-
+*/
 .canceled .filename {
     text-decoration: line-through;
     color:gray;
 }
-
-.canceled .icon::after {
+.canceled .progress-text {
+    color:gray;
+}
+.canceled .cancel-button,
+.success  .cancel-button {
+    display:none;
+}
+.canceled td:first-child::after {
     content:'✕';
     color: gray;
 }
-.success .icon::after {
+.success td:first-child:after {
     content:'✔';
     color: green;
 }
