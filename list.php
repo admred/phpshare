@@ -23,21 +23,21 @@
     
     <fieldset class="sorter-bar">
         <legend>Filter</legend>
-        <select id="sorter">
-            <option value="0" selected disabled>Sort By</option>
-            <option value="1">Name</option>
-            <option value="2">Date</option>
-            <option value="3">Size</option>
-            <option value="4">Type</option>
-        </select>
-        <label for="asc">
-            <input type="radio" id="asc" name="order[]" value="1" checked>
-            Ascending
-        </label>
-        <label for="desc">
-            <input type="radio" id="desc" name="order[]" value="2">
-            Descending
-        </label>
+        <form action="list.php" method="GET">
+            <select id="sortby" name="sort">
+                <option value="0" selected disabled>Sort By</option>
+                <option value="1">Name</option>
+                <option value="2">Date</option>
+                <option value="3">Size</option>
+                <option value="4">Type</option>
+            </select>
+            <select id="orderby" name="order">
+                <option value="0" selected disabled>Order By</option>
+                <option value="1">Ascending</option>
+                <option value="2">Descending</option>
+            </select>
+            <input type="submit" value="Filter">
+        </form>
     </fieldset>
     
     <main class="container">

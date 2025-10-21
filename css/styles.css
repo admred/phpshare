@@ -11,12 +11,8 @@
 }
  
 body {
-    margin: 1rem;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: start;
-    gap: 0.5rem;
     box-sizing: border-box;
     font-family: 'Bitstream Vera Sans',sans-serif;
 }
@@ -34,7 +30,7 @@ nav > .button {
 main {
     display:flex;
     flex-direction: column;
-    width:clamp(360px,100%,750px);
+
     gap:1rem;
 }
 
@@ -54,14 +50,16 @@ td,th {
 }
 
 .button {
+    display:inline-block;
     border: 1px solid lightgray;
     border-radius: 0.2rem;
-    padding: 1.6rem;
+    padding: 1.3rem;
     line-height: 0;
     text-decoration: none;
     color:gray;
     cursor:pointer;
     text-align:center;
+    min-width: 65px;
 }
 
 .button:hover, .button.active {
@@ -69,6 +67,7 @@ td,th {
     border-color: dodgerblue;
     color:white;
     font-weight: bolder;
+    
 }
 
 input[type="file"] {

@@ -9,7 +9,8 @@
 .sorter-bar {
     display:flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: start;
+    gap:1rem;
     border: 1px solid lightgrey;
     flex-wrap: wrap;
 }
@@ -17,7 +18,8 @@
     color: gray;
     
 }
-select {
+select,
+input[type="submit"] {
     font-size:1rem;
     font-family: 'Bitstream Vera Sans',sans-serif;
 }
