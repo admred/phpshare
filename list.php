@@ -21,22 +21,21 @@
         </a>
     </nav>
     
-    <fieldset class="sorter-bar">
-        <legend>Filter</legend>
-        <form action="list.php" method="GET">
-            <select id="sortby" name="sort">
-                <option value="1">Name</option>
-                <option value="2">Date</option>
-                <option value="3">Size</option>
-                <option value="4">Type</option>
-            </select>
-            <select id="orderby" name="order">
-                <option value="1">Ascending</option>
-                <option value="2">Descending</option>
-            </select>
-            <input type="submit" value="Filter">
-        </form>
-    </fieldset>
+    
+    <form action="list.php" method="GET" class="sorter-bar">
+        <select id="sortby" name="sort">
+            <option value="1">Name</option>
+            <option value="2">Date</option>
+            <option value="3">Size</option>
+            <option value="4">Type</option>
+        </select>
+        <select id="orderby" name="order">
+            <option value="1">Descending</option>
+            <option value="2">Ascending</option>
+        </select>
+        <input type="submit" value="Filter">
+    </form>
+    
     
     <main class="container">
         <ul class="u-list">

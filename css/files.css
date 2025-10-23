@@ -9,15 +9,31 @@
 .sorter-bar {
     display:flex;
     flex-direction: row;
-    justify-content: start;
+    justify-content: center;
     gap:1rem;
-    border: 1px solid lightgrey;
     flex-wrap: wrap;
+    margin: 1rem 0;
+
 }
-.sorter-bar legend{
-    color: gray;
-    
+.sorter-bar > * {
+    background: linear-gradient(0deg,#ddd, #fff,#ddd);
+    height:2.5rem;
+    padding:0 1rem;
+    border: 1px solid lightgray;
+    font-size:0.9rem;
+    border-radius: 3px;
+
 }
+.sorter-bar > input[type="submit"] {
+    background: linear-gradient(0deg,#ddd, #fff,#ddd);
+    cursor: pointer;
+    font-size:0.9rem;
+    border-radius: 3px;
+}
+.sorter-bar > input[type="submit"]:active {
+    background: linear-gradient(0deg,#fff, #ddd,#fff);
+}
+
 select,
 input[type="submit"] {
     font-size:1rem;

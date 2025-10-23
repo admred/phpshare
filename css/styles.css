@@ -6,6 +6,7 @@
     margin:0;
     list-style: none;
     text-decoration: none;
+    font-family: 'Bitstream Vera Sans',sans-serif;
     cursor:default;
     color:black;
 }
@@ -13,8 +14,10 @@
 body {
     display: flex;
     flex-direction: column;
+    gap:10px;
     box-sizing: border-box;
-    font-family: 'Bitstream Vera Sans',sans-serif;
+    max-width: 750px;
+    margin: 0 auto;
 }
 
 nav {
@@ -109,30 +112,16 @@ tr td:first-child {
     background-color: salmon;
 }
 
-.filename {
+main {
     width:100%;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .progress-text {
     width:4rem;
 }
-/*
-.spinning .status-icon {
-    background-image: url('/assets/spinner.svg');    
-    background-repeat: no-repeat;
-    background-position: center;
-    color:black;
-}
-.spinning .status-icon:hover {
-    background: none;
-}
 
-.spinning .status-icon:hover:before {
-    content:'✕';
-    overflow: hidden;
-    color: red;
-    cursor:pointer;
-}
-*/
 .canceled .filename {
     text-decoration: line-through;
     color:gray;
@@ -171,6 +160,7 @@ tr td:first-child {
 }
 
 @media (width > 750px){
+    
     nav > .button {
         width:auto;
     }
