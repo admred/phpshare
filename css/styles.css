@@ -56,10 +56,11 @@ td,th {
     display:inline-block;
     border: 1px solid lightgray;
     border-radius: 0.2rem;
-    padding: 1.3rem;
-    line-height: 0;
+    padding: 1rem;
     text-decoration: none;
     color:gray;
+    background-color: white;
+    font-size:1rem;
     cursor:pointer;
     text-align:center;
     min-width: 65px;
@@ -69,8 +70,6 @@ td,th {
     background-color: dodgerblue;
     border-color: dodgerblue;
     color:white;
-    font-weight: bolder;
-    
 }
 
 input[type="file"] {
@@ -122,21 +121,37 @@ main {
     width:4rem;
 }
 
-.canceled .filename {
-    text-decoration: line-through;
-    color:gray;
-}
-.canceled .progress-text {
-    color:gray;
-}
+
+.danger .cancel-button,
 .canceled .cancel-button,
 .success  .cancel-button {
     display:none;
 }
+
 .canceled td:first-child::after {
     content:'✕';
     color: gray;
 }
+.canceled .filename {
+    text-decoration: line-through;
+}
+.canceled .progress-text {
+}
+
+
+.danger td {
+    color: red;
+}
+.danger td:first-child::after {
+    content:'✕';
+}
+.danger .filename {
+    text-decoration: line-through;
+}
+.danger .progress-text{
+    display:none;
+}
+
 .success td:first-child:after {
     content:'✔';
     color: green;

@@ -53,7 +53,7 @@ const worker=async(queue)=>{
   while( true ) {
     const file= await queue.shift();
 
-    /* if there is not work today, sleep again */
+    /* if is not work, sleep again */
     if( file == null ){
       await delay(1000);
       continue;
@@ -125,8 +125,6 @@ async function send_file(file,hash) {
     }
   };
   xhr.onload=(x)=>{
-    console.log(xhr);
-    console.log(x)
     if(xhr.status === 201 || xhr.status === 200 ){
       console.info('Server respond OK');
       elem.classList.replace('spinning','success');
@@ -136,19 +134,26 @@ async function send_file(file,hash) {
     }
   };
   xhr.onerror= err=>{
-    
-    console.error('Conection Error : '+err)
-    cancel(elem);
+    danger(elem); 
   }
  xhr.send(form_data);
 }
 
 function cancel(elem) {
-  if( ! requests[elem.id] ){
-    console.error('elem has not hash');
+  if( ! elem || ! requests[elem.id] ){
     return;
   }
   elem.classList.replace('spinning','canceled');
+  requests[elem.id].abort();
+  delete requests[elem.id];
+  elem.removeAttribute('id');
+}
+function danger(elem) {
+  if( ! elem  || ! requests[elem.id] ){
+    return;
+  }
+  elem.classList.replace('canceled','danger');
+  elem.classList.replace('spinning','danger');
   requests[elem.id].abort();
   delete requests[elem.id];
   elem.removeAttribute('id');

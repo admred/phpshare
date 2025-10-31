@@ -1,6 +1,8 @@
 .u-list li a {
     color:black;
-    padding-left:5px;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .u-list li {
     border-bottom: 1px solid #ccc;
@@ -13,8 +15,15 @@
     gap:1rem;
     flex-wrap: wrap;
     margin: 1rem 0;
+    display:block;
 
 }
+.sorter-bar option {
+    background-color: white;
+    height: 1rem;
+
+}
+/*
 .sorter-bar > * {
     background: linear-gradient(0deg,#ddd, #fff,#ddd);
     height:2.5rem;
@@ -45,7 +54,7 @@ fieldset {
     justify-content: space-between;
     padding:1rem;
 }
-
+*/
 .meta {
     display:flex;
     gap:5px;

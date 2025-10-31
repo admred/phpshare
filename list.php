@@ -23,17 +23,17 @@
     
     
     <form action="list.php" method="GET" class="sorter-bar">
-        <select id="sortby" name="sort">
+        <select class="button" name="sort">
             <option value="1">Name</option>
             <option value="2">Date</option>
             <option value="3">Size</option>
             <option value="4">Type</option>
         </select>
-        <select id="orderby" name="order">
+        <select class="button" name="order">
             <option value="1">Descending</option>
             <option value="2">Ascending</option>
         </select>
-        <input type="submit" value="Filter">
+        <input type="submit" class="button" value="Apply">
     </form>
     
     
